@@ -17,7 +17,6 @@ using Dapper;
 using InternalWebsite.ViewModel.DTOs;
 using Microsoft.AspNetCore.Components.Forms;
 using Org.BouncyCastle.Utilities;
-using DevExpress.Compatibility.System.Windows.Forms;
 using System.Drawing;
 using System.Text.RegularExpressions;
 

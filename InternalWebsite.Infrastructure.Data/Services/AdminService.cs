@@ -1,4 +1,4 @@
-﻿using DevExpress.Xpo;
+﻿
 using InternalWebsite.Application.Utils;
 using InternalWebsite.Application.ViewModels;
 using InternalWebsite.Core.Entities;
@@ -54,9 +54,9 @@ namespace InternalWebsite.Infrastructure.Data.Services
                     return new ResponseHelper(_configuration).ErrorMessage(message: "Admin Role not defined.");
                 }
 
-                var adminUsers = await _userManager.Users
+                var adminUsers =  _userManager.Users
                                                          .Where(user => _userManager.GetRolesAsync(user).Result.Any(role => role == "Admin" || role == "SuperAdmin"))
-                                                         .ToListAsync();
+                                                         .ToList();
 
                 var adminUserDtos = new List<AdminUserDto>();
 
