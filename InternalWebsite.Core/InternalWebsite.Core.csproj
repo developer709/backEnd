@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Mapster" Version="7.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.16" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Extentions" />
+        <Folder Include="Mappers" />
+        <Folder Include="Repositories\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InternalWebsite.ViewModel\InternalWebsite.ViewModel.csproj" />
+    </ItemGroup>
+
+    <Target Name="DTOsGenerator">
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet build" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.Core.DTOs -o DTOs" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.Core.Extentions -o Extentions" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.Core.Mappers -o Mappers" />
+    </Target>
+
+</Project>

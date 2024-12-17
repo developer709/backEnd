@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Extentions\**" />
+      <Compile Remove="Mappers\**" />
+      <Compile Remove="Repositories\**" />
+      <EmbeddedResource Remove="Extentions\**" />
+      <EmbeddedResource Remove="Mappers\**" />
+      <EmbeddedResource Remove="Repositories\**" />
+      <None Remove="Extentions\**" />
+      <None Remove="Mappers\**" />
+      <None Remove="Repositories\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Mapster" Version="7.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.16" />
+    </ItemGroup>
+
+    <Target Name="DTOsGenerator">
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet build" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.ViewModel.DTOs -o DTOs" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.ViewModel.Extentions -o Extentions" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n InternalWebsite.ViewModel.Mappers -o Mappers" />
+    </Target>
+
+</Project>
