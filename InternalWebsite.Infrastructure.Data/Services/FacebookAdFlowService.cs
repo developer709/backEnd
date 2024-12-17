@@ -17,7 +17,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static InternalWebsite.Infrastructure.Data.Services.FacebookAdFlowService;
 using static InternalWebsite.ViewModel.Models.FacebookAdDto;
 
