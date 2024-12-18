@@ -17,10 +17,19 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+# Include ebextensions folder in the package
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'  # Root folder of the repo
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/WebApp.zip'
+    replaceExistingArchive: true
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:IncludeEbExtensions=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -29,6 +38,7 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+# Deployment to Azure Web App (Staging)
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -37,6 +47,7 @@ steps:
     WebAppName: 'TestDemoAppTraining'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
+# Deployment to Production Slot
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -47,6 +58,8 @@ steps:
     ResourceGroupName: 'ChowChoiceResourceGroup1'
     SlotName: 'production'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
+# Second deployment (optional cleanup)
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure subscription 1(00c7988c-90e3-45da-8995-bb82db346244)'
@@ -57,15 +70,3 @@ steps:
     slotName: 'production'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
-
---------------------------
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(00c7988c-90e3-45da-8995-bb82db346244)'
-    appType: 'webApp'
-    WebAppName: 'TestDemoAppTraining'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
