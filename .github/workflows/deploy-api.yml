@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'  # Adjust version as needed
+        dotnet-version: '6.0.100'  # Adjust version as needed
 
     - name: Build 
       run: dotnet build ./InternalWebsite.API/InternalWebsite.API.csproj  --configuration Release
